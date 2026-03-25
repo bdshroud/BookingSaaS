@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr Taiyab Memorial Hospital - Appointment</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f3f6fb;
+}
+
+.wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+/* LEFT PANEL */
+.sidebar {
+  width: 30%;
+  background: #0f172a;
+  color: white;
+  padding: 30px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.hospital {
+  font-size: 14px;
+  margin-bottom: 30px;
+  opacity: 0.8;
+}
+
+.step {
+  margin: 20px 0;
+  opacity: 0.5;
+}
+
+.step.active {
+  opacity: 1;
+  font-weight: bold;
+}
+
+/* RIGHT PANEL */
+.content {
+  width: 70%;
+  padding: 40px;
+  background: white;
+}
+
+.card {
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.card:hover {
+  border-color: #2563eb;
+}
+
+.card.active {
+  background: #2563eb;
+  color: white;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.success {
+  text-align: center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<!-- LEFT -->
+<div class="sidebar">
+  <div class="logo">🏥 Appointment System</div>
+  <div class="hospital">
+    Dr Taiyab Memorial Hospital<br>
+    Dr Ayesha Sohail
+  </div>
+
+  <div class="step active" id="s1">1. Select Service</div>
+  <div class="step" id="s2">2. Select Date</div>
+  <div class="step" id="s3">3. Select Time</div>
+  <div class="step" id="s4">4. Patient Details</div>
+</div>
+
+<!-- RIGHT -->
+<div class="content">
+
+<!-- STEP 1 -->
+<div id="step1">
+  <h2>Select Service</h2>
+
+  <div class="card" onclick="selectService(this,'General Consultation')">
+    General Consultation (20 min)
+  </div>
+
+  <div class="card" onclick="selectService(this,'Specialist Consultation')">
+    Specialist Consultation (30 min)
+  </div>
+
+  <div class="card" onclick="selectService(this,'Minor Surgery Consultation')">
+    Minor Surgery Consultation
+  </div>
+
+  <button onclick="next(2)">Continue</button>
+</div>
+
+<!-- STEP 2 -->
+<div id="step2" class="hidden">
+  <h2>Select Date</h2>
+  <input type="date" id="date">
+
+  <button onclick="next(3)">Continue</button>
+</div>
+
+<!-- STEP 3 -->
+<div id="step3" class="hidden">
+  <h2>Select Time</h2>
+
+  <div class="card" onclick="selectTime(this,'10:00 AM')">10:00 AM</div>
+  <div class="card" onclick="selectTime(this,'10:30 AM')">10:30 AM</div>
+  <div class="card" onclick="selectTime(this,'11:00 AM')">11:00 AM</div>
+  <div class="card" onclick="selectTime(this,'11:30 AM')">11:30 AM</div>
+
+  <button onclick="next(4)">Continue</button>
+</div>
+
+<!-- STEP 4 -->
+<div id="step4" class="hidden">
+  <h2>Patient Details</h2>
+
+  <input type="text" placeholder="Patient Name" id="name">
+  <input type="text" placeholder="Phone Number">
+  <input type="email" placeholder="Email (optional)">
+
+  <button onclick="confirm()">Confirm Appointment</button>
+</div>
+
+<!-- SUCCESS -->
+<div id="success" class="hidden success">
+  <h2>✅ Appointment Confirmed</h2>
+  <p id="result"></p>
+</div>
+
+</div>
+
+</div>
+
+<script>
+let service = '';
+let time = '';
+
+function next(step) {
+  document.querySelectorAll('.content > div').forEach(el => el.classList.add('hidden'));
+  document.getElementById('step' + step).classList.remove('hidden');
+
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+  document.getElementById('s' + step).classList.add('active');
+}
+
+function selectService(el, val) {
+  document.querySelectorAll('#step1 .card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  service = val;
+}
+
+function selectTime(el, val) {
+  document.querySelectorAll('#step3 .card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  time = val;
+}
+
+function confirm() {
+  let name = document.getElementById('name').value;
+  let date = document.getElementById('date').value;
+
+  document.querySelectorAll('.content > div').forEach(el => el.classList.add('hidden'));
+  document.getElementById('success').classList.remove('hidden');
+
+  document.getElementById('result').innerHTML =
+    "<b>Patient:</b> " + name + "<br>" +
+    "<b>Service:</b> " + service + "<br>" +
+    "<b>Date:</b> " + date + "<br>" +
+    "<b>Time:</b> " + time;
+}
+</script>
+
+</body>
+</html>
